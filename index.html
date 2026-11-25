@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Pizzerías Carlos · La pizza que recordabas</title>
   <meta name="description" content="Pizzas de masa de obrador y nueva masa madre con 30 horas de fermentación. Pide a domicilio, recoge en tu pizzería o usa Click &amp; Car. Crea tu pizza o pídela por mitades.">
-  <meta name="theme-color" content="#c8102e">
+  <meta name="theme-color" content="#0b0a09">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://www.pizzeriascarlos.es/">
   <link rel="alternate" hreflang="es" href="https://www.pizzeriascarlos.es/">
@@ -22,8 +22,8 @@
   <link rel="icon" href="https://sources-sp001.s3.eu-south-2.amazonaws.com/produccion/recursos/430/imagenes/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&display=swap" rel="stylesheet">
-  <link rel="preload" as="image" href="img/pizzas/carlo-peperoni-pmcarpe.webp" fetchpriority="high">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="img/banner/banner1.webp" fetchpriority="high">
   <link rel="stylesheet" href="css/carlos.css">
   <script type="application/ld+json">
   {"@context":"https://schema.org","@graph":[
@@ -38,7 +38,7 @@
   <!-- CABECERA -->
   <header class="hdr" id="hdr">
     <div class="wrap hdr__in">
-      <a class="hdr__logo" href="#top" aria-label="Pizzerías Carlos, volver arriba"><img src="img/logo-carlos.svg" alt="Pizzería Carlos, la pizza que recordabas" width="150" height="60"></a>
+      <a class="hdr__logo" href="#top" aria-label="Pizzerías Carlos, volver arriba"><img src="img/logo-carlos.svg" alt="Pizzería Carlos, la pizza que recordabas" width="540" height="304"></a>
       <nav class="hdr__nav" aria-label="Principal">
         <a href="#carta">Carta</a>
         <a href="#promos">Promociones</a>
@@ -69,9 +69,40 @@
   </div>
 
   <main id="main">
-    <!-- HERO -->
-    <section class="hero" id="top" aria-labelledby="h1">
-      <div class="hero__grain" aria-hidden="true"></div>
+    <!-- ESCAPARATE DE PROMOCIONES -->
+    <section class="vitrina" id="top" aria-labelledby="vitrina-title">
+      <div class="vitrina__amb" aria-hidden="true"><img class="on" src="img/banner/banner1.webp" alt=""><img src="img/banner/banner1.webp" alt=""></div>
+      <div class="grain" aria-hidden="true"></div>
+      <div class="vitrina__in">
+        <h2 class="sr-only" id="vitrina-title">Promociones destacadas</h2>
+        <div class="slider" id="slider" role="region" aria-roledescription="carrusel" aria-label="Promociones destacadas">
+          <div class="slider__frame" id="slider-frame">
+            <a class="slide is-on" href="#promos" aria-roledescription="diapositiva" aria-label="1 de 4: tu segunda pizza mediana al 50 %. Ver promociones" data-t="Tu segunda mediana al 50 %" data-s="La segunda sabe mejor: a mitad de precio"><img src="img/banner/banner1.webp" alt="Tu segunda mediana al 50 %. La segunda sabe mejor, ¡a mitad de precio!" width="1440" height="599" fetchpriority="high" draggable="false"></a>
+            <a class="slide" href="https://www.pizzeriascarlos.es/ofertas/2-carlogangas-CARLOGANGAS2/" target="_blank" rel="noopener" aria-roledescription="diapositiva" aria-label="2 de 4: CarloGANGAS por solo 5,95 € a recoger. Ver la oferta" aria-hidden="true" tabindex="-1" data-t="CarloGANGAS a 5,95 €" data-s="Calidad gourmet, precio de ganga"><img src="img/banner/banner2.webp" alt="CarloGANGAS: calidad gourmet, precio de ganga. Por solo 5,95 € a recoger: La Jamona, La BBQona y La Tunante" width="1440" height="599" decoding="async" draggable="false"></a>
+            <a class="slide" href="#promos" aria-roledescription="diapositiva" aria-label="3 de 4: pizza mediana a 6,95 € a recoger. Ver promociones" aria-hidden="true" tabindex="-1" data-t="Pizza mediana a 6,95 €" data-s="Hasta 2 ingredientes, a recoger"><img src="img/banner/banner-695.webp" alt="6,95 €: pizza mediana hasta 2 ingredientes, a recoger" width="1440" height="599" decoding="async" draggable="false"></a>
+            <a class="slide" href="#carta" aria-roledescription="diapositiva" aria-label="4 de 4: nueva masa madre. Ver la carta" aria-hidden="true" tabindex="-1" data-t="Nueva masa madre" data-s="30 horas de fermentación, estirada a mano"><img src="img/banner/banner3.webp" alt="Nueva masa madre: esponjosa y alveolada, elaborada con AOVE, estirada a mano en obrador y con 30 horas de fermentación" width="1440" height="599" decoding="async" draggable="false"></a>
+            <span class="slider__glare" aria-hidden="true"></span>
+            <span class="slider__blade" aria-hidden="true"></span>
+            <button class="slider__arrow slider__arrow--prev" type="button" data-step="-1" aria-label="Promoción anterior"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <button class="slider__arrow slider__arrow--next" type="button" data-step="1" aria-label="Promoción siguiente"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+          </div>
+          <div class="slider__nav">
+            <ol class="slider__tabs">
+              <li><button type="button" data-go="0" aria-current="true" aria-label="Ver promoción 1: tu segunda mediana al 50 %"><span class="n">01</span><span class="t">Segunda mediana al 50 %</span><span class="s">A mitad de precio</span><i><b></b></i></button></li>
+              <li><button type="button" data-go="1" aria-current="false" aria-label="Ver promoción 2: CarloGANGAS a 5,95 €"><span class="n">02</span><span class="t">CarloGANGAS a 5,95 €</span><span class="s">Calidad gourmet, a recoger</span><i><b></b></i></button></li>
+              <li><button type="button" data-go="2" aria-current="false" aria-label="Ver promoción 3: pizza mediana a 6,95 €"><span class="n">03</span><span class="t">Mediana a 6,95 €</span><span class="s">Hasta 2 ingredientes</span><i><b></b></i></button></li>
+              <li><button type="button" data-go="3" aria-current="false" aria-label="Ver promoción 4: nueva masa madre"><span class="n">04</span><span class="t">Nueva masa madre</span><span class="s">30 horas de fermentación</span><i><b></b></i></button></li>
+            </ol>
+            <button class="slider__pause" type="button" aria-pressed="false" aria-label="Pausar el pase de promociones"><svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg><svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.4-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5Z"/></svg></button>
+          </div>
+          <div class="slider__cap" aria-hidden="true"><div><strong id="cap-t">Tu segunda mediana al 50 %</strong><span id="cap-s">La segunda sabe mejor: a mitad de precio</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HERO DE MARCA -->
+    <section class="hero" id="inicio" aria-labelledby="h1">
+      <div class="grain" aria-hidden="true"></div>
       <div class="wrap hero__in">
         <div class="hero__copy">
           <p class="hero__kicker" data-hero-fade>Del obrador a tu mesa</p>
@@ -91,7 +122,7 @@
             <div class="order__row">
               <label class="sr-only" for="cp">Tu dirección o código postal</label>
               <input id="cp" name="q" type="text" inputmode="text" autocomplete="postal-code" placeholder="Tu calle o código postal">
-              <button class="btn btn--dark" type="submit">Buscar pizzería</button>
+              <button class="btn" type="submit">Buscar pizzería</button>
             </div>
             <p class="order__hint" id="order-hint">Te llevamos la pizza con nuestro propio equipo de reparto.</p>
           </form>
@@ -99,6 +130,7 @@
 
         <div class="hero__stage" aria-hidden="true">
           <div class="hero__halo"></div>
+          <div class="hero__ring"></div>
           <div class="hero__plate">
             <img class="hero__pizza" id="hero-pizza" src="img/pizzas/carlo-peperoni-pmcarpe.webp" alt="" width="600" height="600">
           </div>
@@ -110,7 +142,6 @@
           <div class="hero__badge"><span>Nueva</span><strong>Masa madre</strong><span>30 h de fermentación</span></div>
         </div>
       </div>
-      <a class="hero__scroll" href="#historia"><span>Desliza</span><i></i></a>
     </section>
 
     <!-- CINTA -->
@@ -126,7 +157,7 @@
       <div class="story__pin">
         <div class="wrap story__in">
           <div class="story__text">
-            <h2 class="story__title" id="story-title">Así se hace una Carlos</h2>
+            <h2 class="story__title" id="story-title">Así se hace una <em>Carlos</em></h2>
             <ol class="steps">
               <li class="step is-on"><span class="step__n">1</span><div><h3>La masa</h3><p>De obrador, estirada a mano cada día. La nueva masa madre fermenta durante 30 horas para quedar esponjosa y alveolada.</p></div></li>
               <li class="step"><span class="step__n">2</span><div><h3>La salsa</h3><p>Tomate, barbacoa, carbonara o brava. Tú eliges la base.</p></div></li>
@@ -256,13 +287,13 @@
     <section class="trio" id="franquicia" aria-label="App, franquicias y empleo">
       <div class="wrap trio__in">
         <article class="tile tile--app">
-          <h2>Envío gratis desde la app</h2>
-          <p>Pide desde la app de Pizzerías Carlos y no pagas gastos de envío.</p>
+          <img class="tile__bg" src="img/misc/app-envio-gratis.webp" alt="" loading="lazy">
+          <h2 class="sr-only">Envío gratis desde la app</h2>
+          <p class="sr-only">Pide desde la app de Pizzerías Carlos y no pagas gastos de envío.</p>
           <div class="stores">
+            <a href="https://play.google.com/store/apps/details?id=com.pizzeriascarlos.pizzeriascarlos&amp;pcampaignid=web_share&amp;abExternalOpen=true" target="_blank" rel="noopener"><img src="img/misc/app-android.webp" alt="Disponible en Google Play" width="135" height="40" loading="lazy"></a>
             <a href="https://apps.apple.com/es/search?term=pizzerias%20carlos" target="_blank" rel="noopener"><img src="img/misc/app-ios.webp" alt="Descargar en App Store" width="135" height="40" loading="lazy"></a>
-            <a href="https://play.google.com/store/search?q=pizzerias%20carlos&amp;c=apps" target="_blank" rel="noopener"><img src="img/misc/app-android.webp" alt="Disponible en Google Play" width="135" height="40" loading="lazy"></a>
           </div>
-          <img class="tile__pizza" src="img/pizzas/tropical-pmtr.webp" alt="" loading="lazy">
         </article>
         <article class="tile tile--fran">
           <img class="tile__bg" src="img/misc/abre-tu-franquicia.webp" alt="" loading="lazy">
@@ -284,7 +315,7 @@
     <div class="wrap">
       <div class="ftr__top">
         <img class="ftr__logo" src="img/logo-carlos.svg" alt="Pizzería Carlos" width="170" height="68" loading="lazy">
-        <p class="ftr__claim">La pizza que recordabas.</p>
+        <p class="ftr__claim">La pizza que <em>recordabas.</em></p>
       </div>
       <div class="ftr__grid">
         <div>
@@ -340,6 +371,27 @@
   <aside class="drawer" id="drawer" aria-label="Tu pedido" aria-hidden="true" inert></aside>
   <dialog class="sheet" id="sheet" aria-labelledby="sheet-title"></dialog>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- Aviso de la app: envío gratis -->
+  <dialog class="appm" id="appm" aria-labelledby="appm-title" aria-describedby="appm-desc">
+    <div class="appm__in">
+      <button class="appm__close" type="button" data-close-app aria-label="Cerrar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      <div class="appm__media"><img src="img/misc/app-envio-gratis.webp" alt="Gastos de envío gratis por la app: una Carlo Pepperoni junto a la app de Pizzerías Carlos en un móvil" width="900" height="900" loading="lazy"><span class="appm__shine" aria-hidden="true"></span></div>
+      <div class="appm__body">
+        <span class="appm__kicker">Solo en la app</span>
+        <h2 id="appm-title">¡Envío <em>gratis</em> por la app!</h2>
+        <p id="appm-desc">Solo a través de la app de Pizzerías Carlos disfrutas de gastos de envío gratis en tus pedidos.</p>
+        <ul class="appm__perks"><li>0 € de envío</li><li>Descarga gratuita</li><li>Android y iPhone</li></ul>
+        <a class="btn appm__cta" href="https://play.google.com/store/apps/details?id=com.pizzeriascarlos.pizzeriascarlos&amp;pcampaignid=web_share&amp;abExternalOpen=true" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4.6 2.3a1.4 1.4 0 0 0-.6 1.2v17a1.4 1.4 0 0 0 .6 1.2l9.5-9.7-9.5-9.7Zm10.9 8.3 2.7-2.8L6.6 1.2c-.3-.2-.7-.2-1 0l9.9 9.4Zm0 2.8-9.9 9.4c.3.2.7.2 1 0l11.6-6.6-2.7-2.8Zm4.2-4.5-2.9 2.9 2.9 2.9 2.4-1.4c.9-.5.9-1.8 0-2.3l-2.4-2.1Z"/></svg>Descarga tu app aquí</a>
+        <div class="appm__alt">
+          <a href="https://apps.apple.com/es/search?term=pizzerias%20carlos" target="_blank" rel="noopener">¿Tienes iPhone? Búscala en App Store</a>
+          <button class="appm__later" type="button" data-close-app>Ahora no</button>
+        </div>
+        <small>*Condiciones promocionales en <a href="https://www.pizzeriascarlos.es/condiciones-promocionales/" target="_blank" rel="noopener">pizzeriascarlos.es</a></small>
+      </div>
+    </div>
+  </dialog>
+  <button class="appchip" id="appchip" type="button" hidden aria-haspopup="dialog"><img src="img/misc/app-envio-gratis.webp" alt=""><span><strong>Envío gratis</strong>con la app</span></button>
 
   <script src="js/vendor/gsap.min.js" defer></script>
   <script src="js/vendor/ScrollTrigger.min.js" defer></script>

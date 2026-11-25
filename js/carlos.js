@@ -8,6 +8,7 @@
   const G = window.gsap && !reduced ? window.gsap : null;
   const ST = G && window.ScrollTrigger ? window.ScrollTrigger : null;
   if (G && ST) G.registerPlugin(ST);
+  document.documentElement.classList.add(G ? 'g' : 'no-g');
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const eur = (n) => n.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
   const norm = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
@@ -468,8 +469,7 @@
   const hdr = $('#hdr'), bar = $('#bar'), hero = $('.hero');
   let lastY = 0;
   function onScroll(y) {
-    const pastHero = y > hero.offsetHeight - hdr.offsetHeight;
-    hdr.classList.toggle('is-solid', pastHero);
+    hdr.classList.toggle('is-solid', y > 10);
     hdr.classList.toggle('is-hidden', y > lastY + 4 && y > 500 && menu.hidden);
     if (y < lastY - 4 || y < 500) hdr.classList.remove('is-hidden');
     lastY = y;
@@ -494,16 +494,24 @@
       G.ticker.lagSmoothing(0);
     } else addEventListener('scroll', () => onScroll(scrollY), { passive: true });
 
-    // HERO: entrada orquestada
-    const tl = G.timeline({ defaults: { ease: 'expo.out' } });
+    // ENTRADA: cabecera (el logo cae en su pestaña) y escaparate
+    G.timeline({ defaults: { ease: 'expo.out' } })
+      .from('.hdr__logo', { yPercent: -110, duration: 1.2, ease: 'back.out(1.4)', clearProps: 'transform' }, 0.05)
+      .from('.hdr__in > :not(.hdr__logo)', { y: -24, opacity: 0, duration: 1, stagger: 0.08, clearProps: 'all' }, 0.2)
+      .fromTo('.slider__frame', { clipPath: 'inset(10% 6% 10% 6% round 40px)', opacity: 0, scale: 0.97 }, { clipPath: 'inset(0% 0% 0% 0% round 0px)', opacity: 1, scale: 1, duration: 1.5, clearProps: 'clipPath,opacity,scale' }, 0.1)
+      .from('.slider__tabs li, .slider__pause', { y: 24, opacity: 0, duration: 1, stagger: 0.07, clearProps: 'all' }, 0.6);
+
+    // HERO de marca: entrada orquestada al llegar
+    const tl = G.timeline({ defaults: { ease: 'expo.out' }, scrollTrigger: { trigger: hero, start: 'top 78%' } });
     tl.from('.hero__title .ln > span', { yPercent: 115, duration: 1.3, stagger: 0.12 })
       .from('.hero__plate', { scale: 0.4, rotation: -220, opacity: 0, duration: 1.6 }, 0.1)
+      .from('.hero__ring', { scale: 0.6, opacity: 0, rotation: -90, duration: 1.8 }, 0.1)
       .from('[data-hero-fade]', { y: 30, opacity: 0, duration: 1, stagger: 0.1 }, 0.4)
       .from('.float, .leaf, .tomato', { scale: 0, opacity: 0, duration: 1.2, stagger: 0.08, ease: 'back.out(1.8)' }, 0.6)
       .from('.hero__badge', { scale: 0, rotation: -120, duration: 1.1, ease: 'back.out(1.6)' }, 0.9)
-      .from('.hdr__in > *', { y: -30, opacity: 0, duration: 1, stagger: 0.08, clearProps: 'all' }, 0.2)
       .to('.hero__badge', { rotation: 10, yoyo: true, repeat: -1, duration: 3, ease: 'sine.inOut' });
     G.to('.hero__pizza', { rotation: 360, duration: 50, repeat: -1, ease: 'none' });
+    G.to('.hero__ring', { rotation: -360, duration: 80, repeat: -1, ease: 'none' });
     G.to('.f1', { y: -18, yoyo: true, repeat: -1, duration: 3.2, ease: 'sine.inOut' });
     G.to('.f2', { y: 14, rotation: 30, yoyo: true, repeat: -1, duration: 2.7, ease: 'sine.inOut' });
 
@@ -512,7 +520,8 @@
     heroPizzas.forEach((s) => { const i = new Image(); i.src = s; });
     let hp = 0;
     setInterval(() => {
-      if (document.hidden || scrollY > innerHeight) return;
+      const hr = hero.getBoundingClientRect();
+      if (document.hidden || hr.bottom < 0 || hr.top > innerHeight) return;
       hp = (hp + 1) % heroPizzas.length;
       G.timeline().to('.hero__plate', { scale: 0.6, rotation: '+=160', opacity: 0, duration: 0.55, ease: 'power3.in', onComplete: () => { $('#hero-pizza').src = heroPizzas[hp]; } })
         .to('.hero__plate', { scale: 1, rotation: '+=200', opacity: 1, duration: 1, ease: 'expo.out' });
@@ -609,13 +618,166 @@
 
     // APP / FRANQUICIA / EMPLEO
     G.from('.tile', { y: 90, opacity: 0, stagger: 0.12, duration: 1.1, ease: 'expo.out', scrollTrigger: { trigger: '.trio', start: 'top 80%' } });
-    G.fromTo('.tile__pizza', { rotation: -40 }, { rotation: 140, ease: 'none', scrollTrigger: { trigger: '.trio', start: 'top bottom', end: 'bottom top', scrub: true } });
     G.from('.ftr__claim', { yPercent: 60, opacity: 0, duration: 1.2, ease: 'expo.out', scrollTrigger: { trigger: '.ftr', start: 'top 85%' } });
 
     // Menú activo según la sección
     ['carta', 'promos', 'crea', 'servicios', 'pizzerias'].forEach((id) => ST.create({ trigger: '#' + id, start: 'top center', end: 'bottom center', onToggle: (s) => $$(`.hdr__nav a[href="#${id}"]`).forEach((a) => a.classList.toggle('is-active', s.isActive)) }));
 
     addEventListener('load', () => ST.refresh());
+  }
+
+  /* =========================================================
+     Escaparate de promociones (carrusel)
+     ========================================================= */
+  function slider() {
+    const root = $('#slider'); if (!root) return;
+    const frame = $('#slider-frame', root), slides = $$('.slide', root), tabs = $$('[data-go]', root);
+    const blade = $('.slider__blade', root), pauseBtn = $('.slider__pause', root);
+    const amb = $$('.vitrina__amb img');
+    const DUR = 6500;
+    let i = 0, elapsed = 0, busy = false, hover = false, inView = true, paused = reduced, ambI = 0, kb = null;
+
+    function mark() {
+      slides.forEach((s, k) => { const on = k === i; s.classList.toggle('is-on', on); s.setAttribute('aria-hidden', String(!on)); s.tabIndex = on ? 0 : -1; });
+      tabs.forEach((b, k) => { b.setAttribute('aria-current', String(k === i)); b.style.setProperty('--p', k < i ? 1 : 0); });
+      $('#cap-t').textContent = slides[i].dataset.t; $('#cap-s').textContent = slides[i].dataset.s;
+      // luz ambiental: fundido entre dos copias desenfocadas del banner
+      const next = amb[1 - ambI]; next.src = $('img', slides[i]).currentSrc || $('img', slides[i]).src;
+      next.classList.add('on'); amb[ambI].classList.remove('on'); ambI = 1 - ambI;
+    }
+    // zoom lento muy suave: los banners llevan texto cerca de los bordes
+    function kenBurns(s, first) { if (!G) return; kb?.kill(); kb = G.fromTo($('img', s), { scale: first ? 1.15 : 1.025 }, { scale: 1, duration: first ? 2.6 : 2.2, ease: 'expo.out' }); }
+    function go(n, dir) {
+      n = (n + slides.length) % slides.length;
+      if (n === i || busy) return;
+      dir = dir || (n > i ? 1 : -1);
+      const from = slides[i], to = slides[n];
+      i = n; elapsed = 0;
+      if (!G) { mark(); return; }
+      busy = true; kb?.kill();
+      from.classList.add('is-prev');
+      mark();
+      const w = frame.clientWidth;
+      G.timeline({ onComplete: () => { from.classList.remove('is-prev'); G.set($('img', from), { clearProps: 'all' }); G.set(to, { clearProps: 'clipPath' }); busy = false; kenBurns(to); } })
+        .fromTo(to, { clipPath: dir > 0 ? 'inset(0% 0% 0% 100%)' : 'inset(0% 100% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.15, ease: 'expo.inOut' }, 0)
+        .fromTo($('img', to), { scale: 1.25, xPercent: dir * 7 }, { scale: 1.025, xPercent: 0, duration: 1.6, ease: 'expo.out' }, 0.1)
+        .to($('img', from), { scale: 0.92, xPercent: -dir * 9, filter: 'brightness(0.3)', duration: 1.15, ease: 'expo.inOut' }, 0)
+        .fromTo(blade, { x: dir > 0 ? w : 0, opacity: 1 }, { x: dir > 0 ? 0 : w, duration: 1.15, ease: 'expo.inOut' }, 0)
+        .to(blade, { opacity: 0, duration: 0.25 }, 0.95);
+    }
+    // temporizador con barras de progreso tipo "historias"
+    let last = performance.now();
+    function tick(now) {
+      const dt = Math.min(100, now - last); last = now;
+      if (!paused && !hover && inView && !document.hidden && !busy) {
+        elapsed += dt;
+        if (elapsed >= DUR) go(i + 1, 1);
+      }
+      tabs[i].style.setProperty('--p', Math.min(1, elapsed / DUR));
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+    if ('IntersectionObserver' in window) new IntersectionObserver(([e]) => { inView = e.isIntersecting; }).observe(root);
+
+    function setPaused(p) {
+      paused = p; pauseBtn.setAttribute('aria-pressed', String(p));
+      pauseBtn.setAttribute('aria-label', p ? 'Reanudar el pase de promociones' : 'Pausar el pase de promociones');
+    }
+    setPaused(paused);
+    pauseBtn.addEventListener('click', () => setPaused(!paused));
+    tabs.forEach((b) => b.addEventListener('click', () => go(Number(b.dataset.go))));
+    $$('[data-step]', root).forEach((b) => b.addEventListener('click', () => go(i + Number(b.dataset.step), Number(b.dataset.step))));
+    root.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') { e.preventDefault(); go(i + 1, 1); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); go(i - 1, -1); }
+    });
+    frame.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') hover = true; });
+    frame.addEventListener('pointerleave', () => {
+      hover = false;
+      if (G) G.to(frame, { rotationX: 0, rotationY: 0, duration: 1, ease: 'expo.out' });
+    });
+    // con teclado se pausa mientras el foco está dentro; con un clic, no
+    root.addEventListener('focusin', (e) => { try { if (e.target.matches(':focus-visible')) hover = true; } catch { hover = true; } });
+    root.addEventListener('focusout', (e) => { if (!root.contains(e.relatedTarget)) hover = false; });
+    // inclinación 3D y reflejo que sigue al ratón
+    frame.addEventListener('pointermove', (e) => {
+      if (e.pointerType !== 'mouse') return;
+      const r = frame.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+      frame.style.setProperty('--gx', x * 100 + '%'); frame.style.setProperty('--gy', y * 100 + '%');
+      if (G) G.to(frame, { rotationY: (x - 0.5) * 5, rotationX: -(y - 0.5) * 5, duration: 0.8, ease: 'power3.out' });
+    });
+    // deslizar con el dedo
+    let sx = null, swiped = false;
+    frame.addEventListener('pointerdown', (e) => { sx = e.clientX; swiped = false; });
+    frame.addEventListener('pointerup', (e) => {
+      if (sx === null) return;
+      const dx = e.clientX - sx; sx = null;
+      if (Math.abs(dx) > 50) { swiped = true; go(i + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1); }
+    });
+    frame.addEventListener('click', (e) => { if (swiped) { e.preventDefault(); e.stopPropagation(); swiped = false; } }, true);
+    kenBurns(slides[0], true);
+  }
+
+  /* =========================================================
+     Aviso de la app: envío gratis (una vez por sesión)
+     ========================================================= */
+  function appPromo() {
+    const dlg = $('#appm'), chip = $('#appchip'); if (!dlg || !dlg.showModal) return;
+    const KEY = 'carlos-app-promo';
+    const panel = $('.appm__in', dlg), media = $('.appm__media', dlg);
+    let closing = false;
+    const seen = () => { try { return sessionStorage.getItem(KEY) === '1'; } catch { return false; } };
+    const markSeen = () => { try { sessionStorage.setItem(KEY, '1'); } catch { /* sin almacenamiento */ } };
+    let miniT;
+    function showChip() {
+      chip.hidden = false; chip.classList.remove('is-mini');
+      clearTimeout(miniT); miniT = setTimeout(() => chip.classList.add('is-mini'), 5000);
+      if (G) G.fromTo(chip, { scale: 0, rotation: -30, opacity: 0 }, { scale: 1, rotation: 0, opacity: 1, duration: 0.9, ease: 'back.out(1.8)', clearProps: 'transform,opacity' });
+    }
+    function open() {
+      if (dlg.open) return;
+      if ($('dialog[open]')) { setTimeout(open, 3000); return; }
+      chip.hidden = true;
+      dlg.showModal(); lock(true); locked = true;
+      if (G) {
+        G.timeline({ defaults: { ease: 'expo.out' } })
+          .fromTo(panel, { y: 90, scale: 0.9, rotationX: 14, opacity: 0, transformPerspective: 1400, transformOrigin: '50% 100%' }, { y: 0, scale: 1, rotationX: 0, opacity: 1, duration: 1.1 })
+          .fromTo('.appm__media img', { scale: 1.3 }, { scale: 1, duration: 1.6 }, 0)
+          .fromTo('.appm__shine', { xPercent: -130 }, { xPercent: 130, duration: 1.3, ease: 'power2.inOut' }, 0.45)
+          .fromTo('.appm__body > *', { y: 26, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.06, duration: 0.9 }, 0.25)
+          .fromTo('.appm__perks li', { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, stagger: 0.07, duration: 0.7, ease: 'back.out(2)' }, 0.6);
+      }
+      panel.tabIndex = -1;
+      setTimeout(() => panel.focus({ preventScroll: true }), 30);
+    }
+    function close() {
+      if (!dlg.open || closing) return;
+      closing = true; markSeen();
+      const fin = () => { dlg.close(); if (G) G.set(panel, { clearProps: 'all' }); afterClose(); };
+      if (!G) { fin(); return; }
+      chip.hidden = false; chip.style.opacity = '0';
+      const c = chip.getBoundingClientRect(), p = panel.getBoundingClientRect();
+      chip.hidden = true; chip.style.opacity = '';
+      const toChip = c.width > 0;
+      G.to(panel, toChip
+        ? { x: c.left + c.width / 2 - (p.left + p.width / 2), y: c.top + c.height / 2 - (p.top + p.height / 2), scale: 0.06, opacity: 0, duration: 0.7, ease: 'power3.in', onComplete: fin }
+        : { y: 70, scale: 0.94, opacity: 0, duration: 0.4, ease: 'power2.in', onComplete: fin });
+    }
+    let locked = false;
+    function afterClose() { if (!locked) return; locked = false; lock(false); closing = false; markSeen(); showChip(); }
+    dlg.addEventListener('close', afterClose);
+    dlg.addEventListener('cancel', (e) => { e.preventDefault(); close(); });
+    dlg.addEventListener('click', (e) => { if (e.target === dlg || e.target.closest('[data-close-app]')) close(); });
+    $('.appm__cta', dlg).addEventListener('click', () => markSeen());
+    chip.addEventListener('click', open);
+    // la imagen se inclina con el ratón
+    media.addEventListener('pointermove', (e) => {
+      if (!G || e.pointerType !== 'mouse') return;
+      const r = media.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
+      G.to('.appm__media img', { x: x * -16, y: y * -16, scale: 1.06, duration: 0.8, ease: 'power3.out' });
+    });
+    media.addEventListener('pointerleave', () => { if (G) G.to('.appm__media img', { x: 0, y: 0, scale: 1, duration: 1, ease: 'expo.out' }); });
+    if (seen()) showChip(); else setTimeout(open, 1800);
   }
 
   /* =========================================================
@@ -635,5 +797,7 @@
     const fin = $('.build__final'); if (fin) fin.style.opacity = 1;
     addEventListener('scroll', () => onScroll(scrollY), { passive: true });
   }
+  slider();
+  appPromo();
   onScroll(scrollY);
 })();

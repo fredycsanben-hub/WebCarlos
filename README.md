@@ -8,6 +8,12 @@ Abre `index.html` en cualquier navegador. Hace falta conexión a internet para c
 
 ## Qué incluye
 
+- **Imagen de marca**: el negro característico de Carlos es el color principal, con acabado premium. El rojo del logo se usa solo como acento y el logo original va en su pestaña negra de la cabecera.
+- **Escaparate de promociones** al abrir la web. Muestra los banners oficiales a pantalla ancha y cambia solo cada 6,5 segundos. Cada cambio entra con un barrido de luz roja, y debajo hay barras de progreso con el título de cada promoción. Detalles:
+  - el fondo toma el color del banner activo;
+  - el banner se inclina y refleja la luz al pasar el ratón;
+  - se puede pausar, usar con flechas o con el teclado, y deslizar con el dedo en el móvil.
+- **Aviso de la app**: "¡Envío gratis por la app!" aparece una vez por visita y lleva a Google Play. Al cerrarlo se recoge en un botón flotante para volver a abrirlo.
 - **Portada animada**: una pizza gigante gira y va cambiando de especialidad. Al moverse el ratón, la escena se desplaza en capas (efecto parallax).
 - **"Así se hace una Carlos"**: la pizza se monta paso a paso a medida que se baja por la página (masa, salsa, queso, ingredientes y horno).
 - **Promociones** que avanzan en horizontal al hacer scroll.
